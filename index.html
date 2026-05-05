@@ -1,0 +1,1854 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>stolekpodmonitor.fun | Stolek pod monitor</title>
+  <meta name="description" content="Stolek pod monitor pro pohodlnější práci. Varianty 80 cm a 90 cm. Objednávka přes WhatsApp, osobní odběr pouze Liberec.">
+  <meta name="theme-color" content="#fff7ed">
+
+  <!-- QR knihovna z CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+
+  <style>
+    :root {
+      --navy: #113A5C;
+      --navy-dark: #0B2239;
+      --blue: #1E6AA8;
+      --wood: #C98A52;
+      --wood-dark: #8A542D;
+      --cream: #FFF7ED;
+      --green: #25D366;
+      --green-dark: #18A94F;
+      --text: #1F2933;
+      --muted: #667085;
+      --line: rgba(31, 41, 51, 0.11);
+      --shadow: 0 22px 55px rgba(17, 58, 92, 0.14);
+      --shadow-soft: 0 12px 32px rgba(17, 58, 92, 0.09);
+      --radius: 26px;
+      --max: 1120px;
+      --header-height: 78px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 94px;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(201, 138, 82, 0.28), transparent 34rem),
+        radial-gradient(circle at top right, rgba(30, 106, 168, 0.14), transparent 32rem),
+        linear-gradient(180deg, #fffaf3 0%, #fff 46%, #f7efe5 100%);
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(var(--max), calc(100% - 32px));
+      margin-inline: auto;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -70px;
+      left: 16px;
+      z-index: 9999;
+      background: var(--navy-dark);
+      color: white;
+      padding: 10px 14px;
+      border-radius: 12px;
+      transition: top 0.2s ease;
+    }
+
+    .skip-link:focus {
+      top: 16px;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 250, 243, 0.88);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(201, 138, 82, 0.2);
+    }
+
+    .head {
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      min-width: 0;
+    }
+
+    .brand strong {
+      color: var(--navy);
+      font-size: clamp(1.08rem, 2vw, 1.42rem);
+      letter-spacing: -0.04em;
+      font-weight: 950;
+      white-space: nowrap;
+    }
+
+    .brand span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .language-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      box-shadow: 0 8px 18px rgba(17, 58, 92, 0.06);
+    }
+
+    .lang-btn {
+      min-width: 42px;
+      min-height: 36px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+      cursor: pointer;
+      padding: 7px 10px;
+    }
+
+    .lang-btn:hover {
+      background: rgba(201, 138, 82, 0.12);
+      color: var(--navy);
+    }
+
+    .lang-btn.is-active {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white;
+      box-shadow: 0 8px 18px rgba(17, 58, 92, 0.18);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      font-weight: 850;
+      transition: transform 0.16s ease, background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    .slide-dot:focus-visible,
+    .slider-arrow:focus-visible,
+    .lang-btn:focus-visible {
+      outline: 4px solid rgba(201, 138, 82, 0.28);
+      outline-offset: 3px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: white;
+      box-shadow: 0 14px 28px rgba(17, 58, 92, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--navy-dark), var(--navy));
+    }
+
+    .btn-whatsapp {
+      background: var(--green);
+      color: #052B14;
+      box-shadow: 0 14px 28px rgba(37, 211, 102, 0.24);
+    }
+
+    .btn-whatsapp:hover {
+      background: var(--green-dark);
+      color: white;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--navy);
+      border: 1px solid rgba(17, 58, 92, 0.14);
+      box-shadow: 0 8px 18px rgba(17, 58, 92, 0.06);
+    }
+
+    .hero {
+      padding: clamp(42px, 8vw, 82px) 0 42px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(320px, 0.98fr);
+      gap: clamp(24px, 5vw, 44px);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 13px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid rgba(201, 138, 82, 0.26);
+      color: var(--wood-dark);
+      font-weight: 850;
+      font-size: 0.92rem;
+      box-shadow: 0 8px 20px rgba(201, 138, 82, 0.09);
+    }
+
+    h1,
+    h2,
+    h3 {
+      color: var(--navy-dark);
+    }
+
+    .hero h1 {
+      margin: 18px 0 16px;
+      font-size: clamp(2.35rem, 7vw, 5.1rem);
+      line-height: 0.98;
+      letter-spacing: -0.075em;
+    }
+
+    .hero p {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(1.04rem, 2vw, 1.25rem);
+      margin: 0 0 26px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .hero-note strong {
+      color: var(--navy);
+    }
+
+    .hero-slider {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      background: white;
+      border: 1px solid rgba(201, 138, 82, 0.24);
+      box-shadow: var(--shadow);
+      min-height: 330px;
+    }
+
+    .hero-slider::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(11, 34, 57, 0.02), rgba(11, 34, 57, 0.16)),
+        radial-gradient(circle at bottom left, rgba(201, 138, 82, 0.26), transparent 55%);
+    }
+
+    .slides {
+      position: relative;
+      height: 100%;
+      min-height: 330px;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+      pointer-events: none;
+    }
+
+    .slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      min-height: 330px;
+      aspect-ratio: 4 / 3;
+      object-fit: cover;
+    }
+
+    .slider-badge {
+      position: absolute;
+      left: 18px;
+      bottom: 18px;
+      z-index: 4;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      border-radius: 20px;
+      padding: 12px 14px;
+      font-weight: 950;
+      color: var(--navy);
+      box-shadow: 0 10px 24px rgba(17, 58, 92, 0.14);
+      backdrop-filter: blur(10px);
+    }
+
+    .slider-badge span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.86rem;
+      font-weight: 750;
+    }
+
+    .slider-controls {
+      position: absolute;
+      inset: auto 16px 16px auto;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slider-arrow {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--navy);
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: 950;
+      box-shadow: 0 8px 18px rgba(17, 58, 92, 0.10);
+    }
+
+    .slider-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      backdrop-filter: blur(10px);
+    }
+
+    .slide-dot {
+      width: 10px;
+      height: 10px;
+      padding: 0;
+      border-radius: 50%;
+      border: 0;
+      background: #D6C0A9;
+      cursor: pointer;
+    }
+
+    .slide-dot.is-active {
+      background: var(--wood);
+    }
+
+    section {
+      padding: clamp(44px, 7vw, 60px) 0;
+    }
+
+    .section-title {
+      max-width: 760px;
+      margin-bottom: 26px;
+    }
+
+    .section-title h2 {
+      margin: 0 0 10px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.055em;
+    }
+
+    .section-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(201, 138, 82, 0.18);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+    }
+
+    .product-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-card::after {
+      content: "";
+      position: absolute;
+      width: 190px;
+      height: 190px;
+      right: -90px;
+      top: -90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201, 138, 82, 0.22), rgba(201, 138, 82, 0));
+      pointer-events: none;
+    }
+
+    .product-card h3 {
+      margin-top: 14px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #FFF1DE;
+      color: var(--wood-dark);
+      font-weight: 850;
+      font-size: 0.92rem;
+    }
+
+    .price {
+      margin: 14px 0;
+      font-size: 2.3rem;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      color: var(--navy);
+    }
+
+    .card p {
+      color: var(--muted);
+    }
+
+    .gallery-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .gallery-view {
+      position: relative;
+      min-height: 460px;
+      background: var(--navy-dark);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .gallery-view::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(11, 34, 57, 0.02), rgba(11, 34, 57, 0.22)),
+        radial-gradient(circle at bottom left, rgba(201, 138, 82, 0.26), transparent 52%);
+    }
+
+    .gallery-view img {
+      width: 100%;
+      height: 460px;
+      object-fit: cover;
+    }
+
+    .gallery-caption {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      z-index: 2;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      backdrop-filter: blur(10px);
+      color: var(--navy-dark);
+      font-weight: 800;
+    }
+
+    .thumbs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .thumb {
+      padding: 0;
+      border: 3px solid transparent;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      background: white;
+      box-shadow: 0 10px 22px rgba(17, 58, 92, 0.08);
+    }
+
+    .thumb.is-active {
+      border-color: var(--wood);
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .num {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--wood), var(--wood-dark));
+      color: white;
+      font-weight: 950;
+      margin-bottom: 16px;
+    }
+
+    .story {
+      background:
+        radial-gradient(circle at top right, rgba(201, 138, 82, 0.22), transparent 32rem),
+        linear-gradient(135deg, #123A5C, #0B2239);
+      color: white;
+      border-radius: 34px;
+      padding: clamp(26px, 5vw, 48px);
+      box-shadow: var(--shadow);
+    }
+
+    .story h2 {
+      margin-top: 0;
+      color: white;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+    }
+
+    .story p {
+      color: rgba(255, 255, 255, 0.88);
+      margin-bottom: 0;
+      font-size: 1.12rem;
+    }
+
+    .order {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    form {
+      display: grid;
+      gap: 15px;
+    }
+
+    .row {
+      display: grid;
+      gap: 7px;
+    }
+
+    label {
+      font-weight: 850;
+      color: var(--navy-dark);
+    }
+
+    .req {
+      color: #B64012;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid rgba(17, 58, 92, 0.13);
+      background: white;
+      color: var(--text);
+      border-radius: 16px;
+      padding: 13px 14px;
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .help,
+    .privacy {
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .pickup,
+    .payment-note {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #FFF1DE;
+      border: 1px solid rgba(201, 138, 82, 0.32);
+      color: var(--wood-dark);
+      padding: 13px 14px;
+      border-radius: 16px;
+      font-weight: 850;
+      margin-bottom: 16px;
+    }
+
+    .payment-note {
+      margin-top: -4px;
+      font-weight: 750;
+    }
+
+    .payment-note strong {
+      color: var(--navy-dark);
+    }
+
+    .error {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(182, 64, 18, 0.35);
+      background: #FFF0EB;
+      color: #7C2509;
+      font-weight: 850;
+    }
+
+    .error.show {
+      display: block;
+    }
+
+    .result {
+      display: none;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .summary {
+      display: grid;
+      gap: 8px;
+      margin: 18px 0;
+      padding: 16px;
+      background: #FFF9F1;
+      border-radius: 18px;
+      border: 1px solid rgba(201, 138, 82, 0.22);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px dashed rgba(201, 138, 82, 0.28);
+      padding-bottom: 8px;
+    }
+
+    .summary-row:last-child {
+      border: 0;
+      padding-bottom: 0;
+    }
+
+    .summary-row span {
+      color: var(--muted);
+    }
+
+    .summary-row strong {
+      text-align: right;
+      overflow-wrap: anywhere;
+      color: var(--navy-dark);
+    }
+
+    .qr-wrap {
+      display: grid;
+      place-items: center;
+      padding: 18px;
+      background: white;
+      border: 1px solid rgba(201, 138, 82, 0.22);
+      border-radius: 18px;
+      margin: 16px 0;
+      overflow: hidden;
+    }
+
+    #qrCode {
+      display: grid;
+      place-items: center;
+      max-width: 100%;
+    }
+
+    #qrCode img,
+    #qrCode canvas {
+      max-width: 100%;
+      height: auto !important;
+      border-radius: 10px;
+    }
+
+    .footer {
+      padding: 36px 0;
+      border-top: 1px solid rgba(201, 138, 82, 0.18);
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.78);
+      font-size: 0.94rem;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer strong {
+      color: var(--navy);
+    }
+
+    @media (max-width: 920px) {
+      :root {
+        --header-height: 70px;
+      }
+
+      .hero-grid,
+      .order {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-slider {
+        max-width: 760px;
+      }
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .head {
+        flex-wrap: wrap;
+        padding: 10px 0;
+      }
+
+      .header-actions {
+        margin-left: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav {
+        display: none;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-view {
+        min-height: 300px;
+      }
+
+      .gallery-view img {
+        height: clamp(280px, 68vw, 430px);
+      }
+
+      .thumbs {
+        gap: 8px;
+      }
+
+      .thumb img {
+        height: clamp(72px, 20vw, 110px);
+      }
+
+      .summary-row {
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .summary-row strong {
+        text-align: left;
+      }
+
+      .slider-controls {
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .slider-dots {
+        bottom: 68px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .container {
+        width: min(100% - 22px, var(--max));
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      .actions {
+        align-items: stretch;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .hero-slider {
+        border-radius: 24px;
+        min-height: 280px;
+      }
+
+      .slides {
+        min-height: 280px;
+      }
+
+      .slide img {
+        min-height: 280px;
+      }
+
+      .slider-badge {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+      }
+
+      .slider-controls {
+        display: none;
+      }
+
+      .slider-dots {
+        left: 50%;
+        bottom: 14px;
+      }
+
+      .brand span {
+        font-size: 0.82rem;
+      }
+
+      .story {
+        border-radius: 24px;
+      }
+
+      .language-switcher {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .header-actions {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#objednavka">Přejít na objednávku</a>
+
+  <header class="header">
+    <div class="container head">
+      <a class="brand" href="#" aria-label="stolekpodmonitor.fun - úvod">
+        <strong>stolekpodmonitor.fun</strong>
+        <span data-i18n="brandSubtitle">Ergonomie, pohodlí, jednoduchost.</span>
+      </a>
+
+      <div class="header-actions">
+        <nav class="nav" aria-label="Hlavní navigace">
+          <a class="btn btn-ghost" href="#produkty" data-i18n="navProducts">Varianty</a>
+          <a class="btn btn-primary" href="#objednavka" data-i18n="navOrder">Objednat</a>
+        </nav>
+
+        <div class="language-switcher" aria-label="Přepnutí jazyka">
+          <button type="button" class="lang-btn is-active" data-lang="cs">CZ</button>
+          <button type="button" class="lang-btn" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="de">DE</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow" data-i18n="pickupBadge">📍 Pouze osobní odběr v Liberci</span>
+
+          <h1 data-i18n="heroTitle">Stolek pod monitor, který uleví krku i zádům.</h1>
+
+          <p data-i18n="heroText">
+            Jednoduché zvýšení monitoru pro pohodlnější práci u počítače.
+            Vyberte šířku, doplňte kontakt a objednávku pošlete rovnou přes WhatsApp.
+          </p>
+
+          <div class="actions">
+            <a class="btn btn-whatsapp" href="#objednavka" data-i18n="heroCta">Objednat přes WhatsApp</a>
+            <a class="btn btn-primary" href="#galerie" data-i18n="heroPhotos">Prohlédnout fotky</a>
+          </div>
+
+          <div class="hero-note" data-i18n="heroNote">
+            Dostupné varianty: 80 cm za 500 Kč a 90 cm za 600 Kč.
+          </div>
+        </div>
+
+        <div class="hero-slider" aria-label="Slideshow fotek stolku pod monitor">
+          <!-- Obrázky jsou v rootu projektu: foto1.jpg, foto2.jpg, foto3.jpg -->
+          <div class="slides">
+            <div class="slide is-active">
+              <img src="foto1.jpg" alt="Stolek pod monitor na pracovním stole se dvěma monitory">
+            </div>
+            <div class="slide">
+              <img src="foto2.jpg" alt="Detail boční konstrukce stolku pod monitor">
+            </div>
+            <div class="slide">
+              <img src="foto3.jpg" alt="Stolek pod monitor v kancelářském prostředí">
+            </div>
+          </div>
+
+          <div class="slider-badge">
+            od 500 Kč
+            <span data-i18n="sliderPickup">osobní odběr Liberec</span>
+          </div>
+
+          <div class="slider-dots" aria-label="Přepínání fotek">
+            <button class="slide-dot is-active" type="button" data-slide="0" aria-label="Zobrazit fotku 1"></button>
+            <button class="slide-dot" type="button" data-slide="1" aria-label="Zobrazit fotku 2"></button>
+            <button class="slide-dot" type="button" data-slide="2" aria-label="Zobrazit fotku 3"></button>
+          </div>
+
+          <div class="slider-controls">
+            <button class="slider-arrow" type="button" id="prevSlide" aria-label="Předchozí fotka">‹</button>
+            <button class="slider-arrow" type="button" id="nextSlide" aria-label="Další fotka">›</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="produkty">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="productsTitle">Dvě jednoduché varianty</h2>
+          <p data-i18n="productsText">
+            Vyberte šířku podle pracovního místa. Obě varianty pomohou zvednout monitor
+            a získat pod stolkem praktický prostor například na klávesnici.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card product-card">
+            <span class="pill" data-i18n="pill80">Varianta 80 cm</span>
+            <h3 data-i18n="product80Title">Stolek pod monitor 80 cm</h3>
+            <div class="price">500 Kč</div>
+            <p data-i18n="product80Text">Kompaktnější varianta vhodná tam, kde je méně místa na stole.</p>
+            <a class="btn btn-whatsapp" href="#objednavka" data-preset="80" data-i18n="order80">Objednat 80 cm</a>
+          </article>
+
+          <article class="card product-card">
+            <span class="pill" data-i18n="pill90">Varianta 90 cm</span>
+            <h3 data-i18n="product90Title">Stolek pod monitor 90 cm</h3>
+            <div class="price">600 Kč</div>
+            <p data-i18n="product90Text">Delší varianta pro více prostoru a pohodlnější uspořádání pracovního místa.</p>
+            <a class="btn btn-whatsapp" href="#objednavka" data-preset="90" data-i18n="order90">Objednat 90 cm</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="galerie">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="galleryTitle">Fotky v praxi</h2>
+          <p data-i18n="galleryText">
+            Tady běží stejná sada fotek jako slideshow. Kliknutím na náhled ručně přepnete hlavní fotku.
+          </p>
+        </div>
+
+        <div class="card gallery-card">
+          <div class="gallery-view">
+            <img id="galleryMainImage" src="foto1.jpg" alt="Stolek pod monitor v reálném pracovním prostředí">
+            <div id="galleryCaption" class="gallery-caption">Stolek pod monitor v reálném pracovním prostředí.</div>
+          </div>
+        </div>
+
+        <div class="thumbs" aria-label="Náhledy fotek">
+          <button class="thumb is-active" type="button" data-gallery="0" aria-label="Zobrazit první fotku">
+            <img src="foto1.jpg" alt="Náhled fotky 1">
+          </button>
+
+          <button class="thumb" type="button" data-gallery="1" aria-label="Zobrazit druhou fotku">
+            <img src="foto2.jpg" alt="Náhled fotky 2">
+          </button>
+
+          <button class="thumb" type="button" data-gallery="2" aria-label="Zobrazit třetí fotku">
+            <img src="foto3.jpg" alt="Náhled fotky 3">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="jak-objednat">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="stepsTitle">Jak objednat</h2>
+          <p data-i18n="stepsText">Bez registrace, bez e-shopového košíku. Objednávka se odešle přes WhatsApp.</p>
+        </div>
+
+        <div class="steps">
+          <article class="card">
+            <div class="num">1</div>
+            <h3 data-i18n="step1Title">Vyplňte formulář</h3>
+            <p data-i18n="step1Text">Uveďte jméno, kontakt, variantu stolku a případně preferovaný termín vyzvednutí.</p>
+          </article>
+
+          <article class="card">
+            <div class="num">2</div>
+            <h3 data-i18n="step2Title">Otevřete WhatsApp</h3>
+            <p data-i18n="step2Text">
+              Web připraví zprávu, QR kód a tlačítko pro otevření WhatsAppu.
+              Poté vám pošlu QR kód pro samotnou platbu.
+            </p>
+          </article>
+
+          <article class="card">
+            <div class="num">3</div>
+            <h3 data-i18n="step3Title">Platba a osobní odběr</h3>
+            <p data-i18n="step3Text">
+              Objednávka je závazně potvrzena po potvrzení platby.
+              Dodání je obvykle do 10 dní od objednání a odběr je možný pouze v Liberci.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="jak-to-vzniklo">
+      <div class="container">
+        <div class="story">
+          <h2 data-i18n="storyTitle">Jak to vzniklo</h2>
+          <p data-i18n="storyText">
+            „Začalo to tím, že nás bolelo za krkem a nechtěli jsme mít bolavá záda.
+            Napadl mě proto tento projekt. V tuto chvíli je už po Knorr‑Bremse Liberec
+            těchto stolků víc než 30+ a jejich obliba svědčí o tom, že dávají smysl —
+            a proto vznikl i tento web.“
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="objednavka">
+      <div class="container">
+        <div class="section-title">
+          <h2 data-i18n="orderTitle">Objednávka přes WhatsApp</h2>
+          <p data-i18n="orderText">
+            Vyplňte údaje a web připraví zprávu pro WhatsApp. Nic se nikam neukládá,
+            vše běží pouze ve vašem prohlížeči.
+          </p>
+        </div>
+
+        <div class="order">
+          <div class="card">
+            <div class="pickup" role="note">
+              <span aria-hidden="true">📍</span>
+              <span data-i18n="pickupOnly">Pouze osobní odběr v Liberci.</span>
+            </div>
+
+            <div class="payment-note" role="note">
+              <span aria-hidden="true">💳</span>
+              <span data-i18n="paymentInfo">
+                Po odeslání objednávky vám přes WhatsApp pošlu QR kód pro platbu.
+                Objednávka je závazně potvrzena po potvrzení platby.
+                Dodání je obvykle do 10 dní od objednání.
+              </span>
+            </div>
+
+            <form id="orderForm" novalidate>
+              <div class="row">
+                <label for="name"><span data-i18n="nameLabel">Jméno</span> <span class="req">*</span></label>
+                <input id="name" name="name" type="text" autocomplete="name" required placeholder="Např. Jan Novák">
+              </div>
+
+              <div class="row">
+                <label for="variant"><span data-i18n="variantLabel">Varianta / šířka</span> <span class="req">*</span></label>
+                <select id="variant" name="variant" required>
+                  <option value="" data-i18n="variantPlaceholder">Vyberte variantu</option>
+                  <option value="80">80 cm — 500 Kč</option>
+                  <option value="90">90 cm — 600 Kč</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <label for="contact"><span data-i18n="contactLabel">Kontakt</span> <span class="req">*</span></label>
+                <input id="contact" name="contact" type="text" autocomplete="email tel" required placeholder="Telefon nebo e-mail">
+                <div class="help" data-i18n="contactHelp">Stačí telefon nebo e-mail, abychom se mohli domluvit na předání.</div>
+              </div>
+
+              <div class="row">
+                <label for="term" data-i18n="termLabel">Preferovaný termín vyzvednutí</label>
+                <input id="term" name="term" type="text" placeholder="Např. čtvrtek odpoledne">
+              </div>
+
+              <div class="row">
+                <label for="note" data-i18n="noteLabel">Poznámka</label>
+                <textarea id="note" name="note" placeholder="Např. prosím o variantu co nejdříve, případně jiná poznámka"></textarea>
+              </div>
+
+              <div id="errorBox" class="error" role="alert"></div>
+
+              <button class="btn btn-whatsapp" type="submit" data-i18n="submitOrder">Vygenerovat WhatsApp objednávku</button>
+
+              <p class="privacy" data-i18n="privacy">
+                Odesláním zprávy souhlasíte se zpracováním kontaktních údajů za účelem vyřízení objednávky.
+                QR kód pro platbu bude zaslán následně přes WhatsApp.
+                Objednávka je závazně potvrzena po potvrzení platby.
+              </p>
+            </form>
+          </div>
+
+          <div id="result" class="card result" aria-live="polite">
+            <span class="eyebrow" data-i18n="done">✅ Hotovo</span>
+            <h3 data-i18n="resultTitle">Objednávka je připravená</h3>
+            <p class="help" data-i18n="resultText">
+              Naskenujte QR kód nebo klikněte na tlačítko. WhatsApp se otevře s předvyplněnou zprávou.
+            </p>
+
+            <div id="summary" class="summary"></div>
+
+            <div class="qr-wrap">
+              <div id="qrCode" aria-label="QR kód pro otevření WhatsApp zprávy"></div>
+            </div>
+
+            <div class="actions">
+              <a id="whatsappButton" class="btn btn-whatsapp" href="#" target="_blank" rel="noopener" data-i18n="openWhatsapp">Otevřít WhatsApp</a>
+              <button id="copyButton" class="btn btn-ghost" type="button" data-i18n="copyMessage">Zkopírovat zprávu</button>
+            </div>
+
+            <p id="copyStatus" class="privacy" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <strong>stolekpodmonitor.fun</strong><br>
+        www.stolekpodmonitor.fun
+      </div>
+
+      <div data-i18n="footerText">
+        Objednávky přes WhatsApp. Osobní odběr pouze Liberec.<br>
+        Mini upozornění: kontaktní údaje slouží pouze k vyřízení objednávky.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const PRICES = {
+        "80": 500,
+        "90": 600
+      };
+
+      const WHATSAPP_NUMBER = "420720071467";
+      const PICKUP_INFO = "Liberec";
+
+      let currentLanguage = "cs";
+      let currentMessage = "";
+
+      const TRANSLATIONS = {
+        cs: {
+          brandSubtitle: "Ergonomie, pohodlí, jednoduchost.",
+          navProducts: "Varianty",
+          navOrder: "Objednat",
+          pickupBadge: "📍 Pouze osobní odběr v Liberci",
+          heroTitle: "Stolek pod monitor, který uleví krku i zádům.",
+          heroText: "Jednoduché zvýšení monitoru pro pohodlnější práci u počítače. Vyberte šířku, doplňte kontakt a objednávku pošlete rovnou přes WhatsApp.",
+          heroCta: "Objednat přes WhatsApp",
+          heroPhotos: "Prohlédnout fotky",
+          heroNote: "Dostupné varianty: 80 cm za 500 Kč a 90 cm za 600 Kč.",
+          sliderPickup: "osobní odběr Liberec",
+          productsTitle: "Dvě jednoduché varianty",
+          productsText: "Vyberte šířku podle pracovního místa. Obě varianty pomohou zvednout monitor a získat pod stolkem praktický prostor například na klávesnici.",
+          pill80: "Varianta 80 cm",
+          pill90: "Varianta 90 cm",
+          product80Title: "Stolek pod monitor 80 cm",
+          product80Text: "Kompaktnější varianta vhodná tam, kde je méně místa na stole.",
+          product90Title: "Stolek pod monitor 90 cm",
+          product90Text: "Delší varianta pro více prostoru a pohodlnější uspořádání pracovního místa.",
+          order80: "Objednat 80 cm",
+          order90: "Objednat 90 cm",
+          galleryTitle: "Fotky v praxi",
+          galleryText: "Tady běží stejná sada fotek jako slideshow. Kliknutím na náhled ručně přepnete hlavní fotku.",
+          stepsTitle: "Jak objednat",
+          stepsText: "Bez registrace, bez e-shopového košíku. Objednávka se odešle přes WhatsApp.",
+          step1Title: "Vyplňte formulář",
+          step1Text: "Uveďte jméno, kontakt, variantu stolku a případně preferovaný termín vyzvednutí.",
+          step2Title: "Otevřete WhatsApp",
+          step2Text: "Web připraví zprávu, QR kód a tlačítko pro otevření WhatsAppu. Poté vám pošlu QR kód pro samotnou platbu.",
+          step3Title: "Platba a osobní odběr",
+          step3Text: "Objednávka je závazně potvrzena po potvrzení platby. Dodání je obvykle do 10 dní od objednání a odběr je možný pouze v Liberci.",
+          storyTitle: "Jak to vzniklo",
+          storyText: "„Začalo to tím, že nás bolelo za krkem a nechtěli jsme mít bolavá záda. Napadl mě proto tento projekt. V tuto chvíli je už po Knorr‑Bremse Liberec těchto stolků víc než 30+ a jejich obliba svědčí o tom, že dávají smysl — a proto vznikl i tento web.“",
+          orderTitle: "Objednávka přes WhatsApp",
+          orderText: "Vyplňte údaje a web připraví zprávu pro WhatsApp. Nic se nikam neukládá, vše běží pouze ve vašem prohlížeči.",
+          pickupOnly: "Pouze osobní odběr v Liberci.",
+          paymentInfo: "Po odeslání objednávky vám přes WhatsApp pošlu QR kód pro platbu. Objednávka je závazně potvrzena po potvrzení platby. Dodání je obvykle do 10 dní od objednání.",
+          nameLabel: "Jméno",
+          variantLabel: "Varianta / šířka",
+          variantPlaceholder: "Vyberte variantu",
+          contactLabel: "Kontakt",
+          contactHelp: "Stačí telefon nebo e-mail, abychom se mohli domluvit na předání.",
+          termLabel: "Preferovaný termín vyzvednutí",
+          noteLabel: "Poznámka",
+          submitOrder: "Vygenerovat WhatsApp objednávku",
+          privacy: "Odesláním zprávy souhlasíte se zpracováním kontaktních údajů za účelem vyřízení objednávky. QR kód pro platbu bude zaslán následně přes WhatsApp. Objednávka je závazně potvrzena po potvrzení platby.",
+          done: "✅ Hotovo",
+          resultTitle: "Objednávka je připravená",
+          resultText: "Naskenujte QR kód nebo klikněte na tlačítko. WhatsApp se otevře s předvyplněnou zprávou.",
+          openWhatsapp: "Otevřít WhatsApp",
+          copyMessage: "Zkopírovat zprávu",
+          footerText: "Objednávky přes WhatsApp. Osobní odběr pouze Liberec.<br>Mini upozornění: kontaktní údaje slouží pouze k vyřízení objednávky.",
+          galleryCaptions: [
+            "Stolek pod monitor v reálném pracovním prostředí.",
+            "Detail konstrukce a bočního provedení.",
+            "Použití stolku na pracovním stole v kanceláři."
+          ],
+          placeholders: {
+            name: "Např. Jan Novák",
+            contact: "Telefon nebo e-mail",
+            term: "Např. čtvrtek odpoledne",
+            note: "Např. prosím o variantu co nejdříve, případně jiná poznámka"
+          },
+          errors: {
+            name: "Prosím vyplňte jméno.",
+            variant: "Prosím vyberte variantu stolku.",
+            contact: "Prosím vyplňte kontakt — telefon nebo e-mail.",
+            copyFirst: "Nejdříve prosím vygenerujte objednávku.",
+            copied: "Zpráva byla zkopírována do schránky.",
+            copyFailed: "Kopírování se nepovedlo. Zprávu můžete zkopírovat ručně po otevření WhatsAppu."
+          },
+          summary: {
+            name: "Jméno",
+            variant: "Varianta",
+            price: "Cena",
+            pickup: "Osobní odběr",
+            contact: "Kontakt",
+            term: "Preferovaný termín",
+            note: "Poznámka"
+          }
+        },
+
+        en: {
+          brandSubtitle: "Ergonomics, comfort, simplicity.",
+          navProducts: "Options",
+          navOrder: "Order",
+          pickupBadge: "📍 Personal pickup in Liberec only",
+          heroTitle: "A monitor stand that helps relieve neck and back strain.",
+          heroText: "A simple monitor riser for more comfortable work at your desk. Choose the width, enter your contact details and send the order via WhatsApp.",
+          heroCta: "Order via WhatsApp",
+          heroPhotos: "View photos",
+          heroNote: "Available options: 80 cm for CZK 500 and 90 cm for CZK 600.",
+          sliderPickup: "personal pickup Liberec",
+          productsTitle: "Two simple options",
+          productsText: "Choose the width according to your workspace. Both options help raise your monitor and create useful space underneath, for example for a keyboard.",
+          pill80: "80 cm option",
+          pill90: "90 cm option",
+          product80Title: "Monitor stand 80 cm",
+          product80Text: "A more compact option suitable for desks with limited space.",
+          product90Title: "Monitor stand 90 cm",
+          product90Text: "A wider option for more space and a more comfortable desk setup.",
+          order80: "Order 80 cm",
+          order90: "Order 90 cm",
+          galleryTitle: "Photos in real use",
+          galleryText: "The same set of photos runs as a slideshow. Click a thumbnail to switch the main photo manually.",
+          stepsTitle: "How to order",
+          stepsText: "No registration, no e-shop cart. The order is sent via WhatsApp.",
+          step1Title: "Fill in the form",
+          step1Text: "Enter your name, contact details, selected stand width and optionally your preferred pickup time.",
+          step2Title: "Open WhatsApp",
+          step2Text: "The website prepares a message, QR code and button to open WhatsApp. I will then send you a QR code for the payment.",
+          step3Title: "Payment and pickup",
+          step3Text: "The order is binding after the payment is confirmed. Delivery is usually within 10 days from ordering and pickup is only possible in Liberec.",
+          storyTitle: "How it started",
+          storyText: "It started because our necks hurt and we did not want back pain. That gave me the idea for this project. There are already more than 30 of these stands around Knorr‑Bremse Liberec, and their popularity shows that they make sense — so this website was created.",
+          orderTitle: "Order via WhatsApp",
+          orderText: "Fill in the details and the website will prepare a WhatsApp message. Nothing is stored anywhere; everything runs only in your browser.",
+          pickupOnly: "Personal pickup in Liberec only.",
+          paymentInfo: "After sending the order, I will send you a payment QR code via WhatsApp. The order is binding after the payment is confirmed. Delivery is usually within 10 days from ordering.",
+          nameLabel: "Name",
+          variantLabel: "Option / width",
+          variantPlaceholder: "Select an option",
+          contactLabel: "Contact",
+          contactHelp: "Phone number or e-mail is enough so we can arrange the pickup.",
+          termLabel: "Preferred pickup time",
+          noteLabel: "Note",
+          submitOrder: "Generate WhatsApp order",
+          privacy: "By sending the message, you agree to the processing of your contact details for the purpose of handling the order. The payment QR code will be sent later via WhatsApp. The order is binding after the payment is confirmed.",
+          done: "✅ Done",
+          resultTitle: "Your order is ready",
+          resultText: "Scan the QR code or click the button. WhatsApp will open with a pre-filled message.",
+          openWhatsapp: "Open WhatsApp",
+          copyMessage: "Copy message",
+          footerText: "Orders via WhatsApp. Personal pickup in Liberec only.<br>Mini notice: contact details are used only for handling the order.",
+          galleryCaptions: [
+            "Monitor stand in a real work environment.",
+            "Detail of the construction and side design.",
+            "Use of the stand on an office desk."
+          ],
+          placeholders: {
+            name: "E.g. John Smith",
+            contact: "Phone or email",
+            term: "E.g. Thursday afternoon",
+            note: "E.g. I would like the stand as soon as possible"
+          },
+          errors: {
+            name: "Please enter your name.",
+            variant: "Please select a stand option.",
+            contact: "Please enter a contact — phone number or e-mail.",
+            copyFirst: "Please generate the order first.",
+            copied: "The message has been copied to the clipboard.",
+            copyFailed: "Copying failed. You can copy the message manually after opening WhatsApp."
+          },
+          summary: {
+            name: "Name",
+            variant: "Option",
+            price: "Price",
+            pickup: "Personal pickup",
+            contact: "Contact",
+            term: "Preferred time",
+            note: "Note"
+          }
+        },
+
+        de: {
+          brandSubtitle: "Ergonomie, Komfort, Einfachheit.",
+          navProducts: "Varianten",
+          navOrder: "Bestellen",
+          pickupBadge: "📍 Nur persönliche Abholung in Liberec",
+          heroTitle: "Ein Monitorständer, der Nacken und Rücken entlastet.",
+          heroText: "Eine einfache Erhöhung für den Monitor für komfortableres Arbeiten am Schreibtisch. Breite auswählen, Kontaktdaten eingeben und die Bestellung per WhatsApp senden.",
+          heroCta: "Per WhatsApp bestellen",
+          heroPhotos: "Fotos ansehen",
+          heroNote: "Verfügbare Varianten: 80 cm für 500 CZK und 90 cm für 600 CZK.",
+          sliderPickup: "Abholung in Liberec",
+          productsTitle: "Zwei einfache Varianten",
+          productsText: "Wählen Sie die Breite passend zu Ihrem Arbeitsplatz. Beide Varianten erhöhen den Monitor und schaffen praktischen Platz darunter, zum Beispiel für die Tastatur.",
+          pill80: "Variante 80 cm",
+          pill90: "Variante 90 cm",
+          product80Title: "Monitorständer 80 cm",
+          product80Text: "Kompaktere Variante, geeignet für Schreibtische mit weniger Platz.",
+          product90Title: "Monitorständer 90 cm",
+          product90Text: "Breitere Variante für mehr Platz und eine komfortablere Arbeitsplatzgestaltung.",
+          order80: "80 cm bestellen",
+          order90: "90 cm bestellen",
+          galleryTitle: "Fotos aus der Praxis",
+          galleryText: "Die gleiche Fotoreihe läuft als Slideshow. Durch Klick auf ein Vorschaubild wechseln Sie das Hauptfoto manuell.",
+          stepsTitle: "So bestellen Sie",
+          stepsText: "Keine Registrierung, kein Shop-Warenkorb. Die Bestellung wird per WhatsApp gesendet.",
+          step1Title: "Formular ausfüllen",
+          step1Text: "Geben Sie Name, Kontakt, gewünschte Variante und optional einen bevorzugten Abholtermin ein.",
+          step2Title: "WhatsApp öffnen",
+          step2Text: "Die Website erstellt eine Nachricht, einen QR-Code und eine Schaltfläche zum Öffnen von WhatsApp. Danach sende ich Ihnen den QR-Code für die Zahlung.",
+          step3Title: "Zahlung und Abholung",
+          step3Text: "Die Bestellung ist nach Zahlungsbestätigung verbindlich. Die Lieferung erfolgt in der Regel innerhalb von 10 Tagen ab Bestellung; Abholung nur in Liberec.",
+          storyTitle: "Wie es entstanden ist",
+          storyText: "Es begann damit, dass unsere Nacken schmerzten und wir keine Rückenschmerzen haben wollten. Daraus entstand die Idee für dieses Projekt. Inzwischen gibt es bei Knorr‑Bremse Liberec bereits mehr als 30 dieser Monitorständer, und ihre Beliebtheit zeigt, dass sie sinnvoll sind — deshalb entstand auch diese Website.",
+          orderTitle: "Bestellung per WhatsApp",
+          orderText: "Füllen Sie die Angaben aus und die Website erstellt eine WhatsApp-Nachricht. Es wird nichts gespeichert; alles läuft nur in Ihrem Browser.",
+          pickupOnly: "Nur persönliche Abholung in Liberec.",
+          paymentInfo: "Nach dem Absenden der Bestellung sende ich Ihnen per WhatsApp einen QR-Code für die Zahlung. Die Bestellung ist nach Zahlungsbestätigung verbindlich. Die Lieferung erfolgt in der Regel innerhalb von 10 Tagen ab Bestellung.",
+          nameLabel: "Name",
+          variantLabel: "Variante / Breite",
+          variantPlaceholder: "Variante auswählen",
+          contactLabel: "Kontakt",
+          contactHelp: "Telefon oder E-Mail reicht aus, damit wir die Abholung vereinbaren können.",
+          termLabel: "Bevorzugter Abholtermin",
+          noteLabel: "Notiz",
+          submitOrder: "WhatsApp-Bestellung erstellen",
+          privacy: "Mit dem Senden der Nachricht stimmen Sie der Verarbeitung Ihrer Kontaktdaten zum Zweck der Bestellabwicklung zu. Der QR-Code für die Zahlung wird anschließend per WhatsApp gesendet. Die Bestellung ist nach Zahlungsbestätigung verbindlich.",
+          done: "✅ Fertig",
+          resultTitle: "Ihre Bestellung ist vorbereitet",
+          resultText: "Scannen Sie den QR-Code oder klicken Sie auf die Schaltfläche. WhatsApp öffnet sich mit einer vorausgefüllten Nachricht.",
+          openWhatsapp: "WhatsApp öffnen",
+          copyMessage: "Nachricht kopieren",
+          footerText: "Bestellungen per WhatsApp. Nur persönliche Abholung in Liberec.<br>Hinweis: Kontaktdaten werden nur zur Bestellabwicklung verwendet.",
+          galleryCaptions: [
+            "Monitorständer in einer realen Arbeitsumgebung.",
+            "Detail der Konstruktion und seitlichen Ausführung.",
+            "Verwendung des Ständers auf einem Büroschreibtisch."
+          ],
+          placeholders: {
+            name: "Z. B. Max Mustermann",
+            contact: "Telefon oder E-Mail",
+            term: "Z. B. Donnerstag Nachmittag",
+            note: "Z. B. ich hätte den Ständer gerne so bald wie möglich"
+          },
+          errors: {
+            name: "Bitte geben Sie Ihren Namen ein.",
+            variant: "Bitte wählen Sie eine Variante aus.",
+            contact: "Bitte geben Sie einen Kontakt ein — Telefon oder E-Mail.",
+            copyFirst: "Bitte erstellen Sie zuerst die Bestellung.",
+            copied: "Die Nachricht wurde in die Zwischenablage kopiert.",
+            copyFailed: "Kopieren fehlgeschlagen. Sie können die Nachricht nach dem Öffnen von WhatsApp manuell kopieren."
+          },
+          summary: {
+            name: "Name",
+            variant: "Variante",
+            price: "Preis",
+            pickup: "Persönliche Abholung",
+            contact: "Kontakt",
+            term: "Bevorzugter Termin",
+            note: "Notiz"
+          }
+        }
+      };
+
+      const PHOTOS = [
+        {
+          src: "foto1.jpg",
+          alt: "Stolek pod monitor na pracovním stole se dvěma monitory"
+        },
+        {
+          src: "foto2.jpg",
+          alt: "Detail boční konstrukce stolku pod monitor"
+        },
+        {
+          src: "foto3.jpg",
+          alt: "Stolek pod monitor v kancelářském prostředí"
+        }
+      ];
+
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const dots = Array.from(document.querySelectorAll(".slide-dot"));
+      const prevSlideButton = document.getElementById("prevSlide");
+      const nextSlideButton = document.getElementById("nextSlide");
+      const galleryMainImage = document.getElementById("galleryMainImage");
+      const galleryCaption = document.getElementById("galleryCaption");
+      const thumbs = Array.from(document.querySelectorAll(".thumb"));
+
+      let currentSlide = 0;
+      let slideTimer = null;
+
+      function translatePage(lang) {
+        currentLanguage = lang;
+        const t = TRANSLATIONS[lang];
+
+        document.querySelectorAll("[data-i18n]").forEach(function (element) {
+          const key = element.getAttribute("data-i18n");
+
+          if (t[key]) {
+            element.innerHTML = t[key];
+          }
+        });
+
+        document.getElementById("name").placeholder = t.placeholders.name;
+        document.getElementById("contact").placeholder = t.placeholders.contact;
+        document.getElementById("term").placeholder = t.placeholders.term;
+        document.getElementById("note").placeholder = t.placeholders.note;
+
+        document.querySelectorAll(".lang-btn").forEach(function (button) {
+          button.classList.toggle("is-active", button.getAttribute("data-lang") === lang);
+        });
+
+        document.documentElement.lang = lang;
+        showGalleryPhoto(currentSlide);
+      }
+
+      document.querySelectorAll(".lang-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+          translatePage(button.getAttribute("data-lang"));
+        });
+      });
+
+      function showSlide(index) {
+        currentSlide = (index + PHOTOS.length) % PHOTOS.length;
+
+        slides.forEach(function (slide, slideIndex) {
+          slide.classList.toggle("is-active", slideIndex === currentSlide);
+        });
+
+        dots.forEach(function (dot, dotIndex) {
+          dot.classList.toggle("is-active", dotIndex === currentSlide);
+        });
+
+        showGalleryPhoto(currentSlide);
+      }
+
+      function nextSlide() {
+        showSlide(currentSlide + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentSlide - 1);
+      }
+
+      function startSlideShow() {
+        stopSlideShow();
+        slideTimer = setInterval(nextSlide, 4200);
+      }
+
+      function stopSlideShow() {
+        if (slideTimer) {
+          clearInterval(slideTimer);
+          slideTimer = null;
+        }
+      }
+
+      function showGalleryPhoto(index) {
+        const photo = PHOTOS[index];
+        const t = TRANSLATIONS[currentLanguage];
+
+        if (!photo || !galleryMainImage || !galleryCaption) {
+          return;
+        }
+
+        galleryMainImage.src = photo.src;
+        galleryMainImage.alt = photo.alt;
+        galleryCaption.textContent = t.galleryCaptions[index];
+
+        thumbs.forEach(function (thumb, thumbIndex) {
+          thumb.classList.toggle("is-active", thumbIndex === index);
+        });
+      }
+
+      dots.forEach(function (dot) {
+        dot.addEventListener("click", function () {
+          const index = Number(dot.getAttribute("data-slide"));
+          showSlide(index);
+          startSlideShow();
+        });
+      });
+
+      thumbs.forEach(function (thumb) {
+        thumb.addEventListener("click", function () {
+          const index = Number(thumb.getAttribute("data-gallery"));
+          showSlide(index);
+          startSlideShow();
+        });
+      });
+
+      prevSlideButton.addEventListener("click", function () {
+        prevSlide();
+        startSlideShow();
+      });
+
+      nextSlideButton.addEventListener("click", function () {
+        nextSlide();
+        startSlideShow();
+      });
+
+      startSlideShow();
+
+      const orderForm = document.getElementById("orderForm");
+      const errorBox = document.getElementById("errorBox");
+      const result = document.getElementById("result");
+      const summary = document.getElementById("summary");
+      const qrCode = document.getElementById("qrCode");
+      const whatsappButton = document.getElementById("whatsappButton");
+      const copyButton = document.getElementById("copyButton");
+      const copyStatus = document.getElementById("copyStatus");
+      const variantSelect = document.getElementById("variant");
+
+      function cleanValue(value, fallback = "neuvedeno") {
+        const cleaned = String(value || "").trim();
+        return cleaned || fallback;
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function buildMessage(data) {
+        if (currentLanguage === "en") {
+          return `Hello, I am interested in a monitor stand.
+Name: ${data.name}
+Option: ${data.width} cm
+Price: CZK ${data.price}
+Personal pickup: Liberec
+Contact: ${data.contact}
+Preferred pickup time: ${data.term}
+Note: ${data.note}
+
+I understand that the payment QR code will be sent to me later via WhatsApp.
+The order is binding after the payment is confirmed.
+Delivery is usually within 10 days from ordering.
+
+Thank you.`;
+        }
+
+        if (currentLanguage === "de") {
+          return `Guten Tag, ich interessiere mich für einen Monitorständer.
+Name: ${data.name}
+Variante: ${data.width} cm
+Preis: ${data.price} CZK
+Persönliche Abholung: Liberec
+Kontakt: ${data.contact}
+Bevorzugter Abholtermin: ${data.term}
+Notiz: ${data.note}
+
+Ich nehme zur Kenntnis, dass der QR-Code für die Zahlung anschließend per WhatsApp gesendet wird.
+Die Bestellung ist nach Zahlungsbestätigung verbindlich.
+Die Lieferung erfolgt in der Regel innerhalb von 10 Tagen ab Bestellung.
+
+Vielen Dank.`;
+        }
+
+        return `Dobrý den, mám zájem o stolek pod monitor.
+Jméno: ${data.name}
+Varianta: ${data.width} cm
+Cena: ${data.price} Kč
+Osobní odběr: ${PICKUP_INFO}
+Kontakt: ${data.contact}
+Preferovaný termín: ${data.term}
+Poznámka: ${data.note}
+
+Beru na vědomí, že QR kód pro platbu mi přijde následně přes WhatsApp.
+Objednávka je závazně potvrzena po potvrzení platby.
+Dodání je obvykle do 10 dní od objednání.
+
+Děkuji.`;
+      }
+
+      function buildWhatsappUrl(message) {
+        return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      }
+
+      function showError(message) {
+        errorBox.textContent = message;
+        errorBox.classList.add("show");
+      }
+
+      function clearError() {
+        errorBox.textContent = "";
+        errorBox.classList.remove("show");
+      }
+
+      function renderSummary(data) {
+        const labels = TRANSLATIONS[currentLanguage].summary;
+
+        summary.innerHTML = `
+          <div class="summary-row">
+            <span>${escapeHtml(labels.name)}</span>
+            <strong>${escapeHtml(data.name)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.variant)}</span>
+            <strong>${escapeHtml(data.width)} cm</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.price)}</span>
+            <strong>${escapeHtml(String(data.price))} Kč</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.pickup)}</span>
+            <strong>${escapeHtml(PICKUP_INFO)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.contact)}</span>
+            <strong>${escapeHtml(data.contact)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.term)}</span>
+            <strong>${escapeHtml(data.term)}</strong>
+          </div>
+          <div class="summary-row">
+            <span>${escapeHtml(labels.note)}</span>
+            <strong>${escapeHtml(data.note)}</strong>
+          </div>
+        `;
+      }
+
+      orderForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        clearError();
+        copyStatus.textContent = "";
+
+        const t = TRANSLATIONS[currentLanguage];
+        const formData = new FormData(orderForm);
+
+        const name = cleanValue(formData.get("name"), "");
+        const width = cleanValue(formData.get("variant"), "");
+        const contact = cleanValue(formData.get("contact"), "");
+        const term = cleanValue(formData.get("term"));
+        const note = cleanValue(formData.get("note"));
+
+        if (!name) {
+          showError(t.errors.name);
+          document.getElementById("name").focus();
+          return;
+        }
+
+        if (!width || !PRICES[width]) {
+          showError(t.errors.variant);
+          variantSelect.focus();
+          return;
+        }
+
+        if (!contact) {
+          showError(t.errors.contact);
+          document.getElementById("contact").focus();
+          return;
+        }
+
+        const price = PRICES[width];
+
+        const data = {
+          name: name,
+          width: width,
+          price: price,
+          contact: contact,
+          term: term,
+          note: note
+        };
+
+        currentMessage = buildMessage(data);
+        const whatsappUrl = buildWhatsappUrl(currentMessage);
+
+        renderSummary(data);
+        whatsappButton.href = whatsappUrl;
+
+        qrCode.innerHTML = "";
+
+        if (window.QRCode) {
+          const qrSize = Math.min(210, Math.max(160, window.innerWidth - 96));
+
+          new QRCode(qrCode, {
+            text: whatsappUrl,
+            width: qrSize,
+            height: qrSize,
+            colorDark: "#113A5C",
+            colorLight: "#FFFFFF",
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        } else {
+          qrCode.innerHTML = '<p class="help">QR knihovna se nenačetla. Použijte prosím tlačítko „Otevřít WhatsApp“.</p>';
+        }
+
+        result.classList.add("show");
+        result.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      copyButton.addEventListener("click", async function () {
+        const t = TRANSLATIONS[currentLanguage];
+
+        if (!currentMessage) {
+          copyStatus.textContent = t.errors.copyFirst;
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(currentMessage);
+          copyStatus.textContent = t.errors.copied;
+        } catch (error) {
+          copyStatus.textContent = t.errors.copyFailed;
+        }
+      });
+
+      document.querySelectorAll("[data-preset]").forEach(function (button) {
+        button.addEventListener("click", function () {
+          variantSelect.value = button.getAttribute("data-preset");
+        });
+      });
+
+      translatePage("cs");
+    });
+  </script>
+</body>
+</html>
